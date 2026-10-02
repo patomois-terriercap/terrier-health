@@ -17,7 +17,7 @@ Before opening a pull request, run:
 
 ```bash
 npm run lint
-npx tsc --noEmit
+npm run typecheck
 npm run build
 ```
 
