@@ -1,11 +1,20 @@
 import { NextResponse } from "next/server";
-import { appUrl } from "@/lib/google-oauth";
 import { getSession } from "@/lib/session";
-import { requirePortalSession } from "@/lib/portal-session";
+import {
+  getPortalSession,
+  requirePortalSession,
+} from "@/lib/portal-session";
 
 export async function POST() {
   await requirePortalSession();
-  const session = await getSession();
-  session.destroy();
-  return NextResponse.redirect(`${appUrl()}/`, { status: 303 });
+
+  const portalSession = await getPortalSession();
+  portalSession.destroy();
+
+  const healthSession = await getSession();
+  healthSession.destroy();
+
+  return NextResponse.redirect("https://terriercapital.cl/", {
+    status: 303,
+  });
 }

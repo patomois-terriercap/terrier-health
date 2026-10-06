@@ -1,4 +1,8 @@
 import type { HealthSession } from "./session";
+import {
+  loadRefreshToken,
+  saveRefreshToken,
+} from "./google-token-store";
 
 const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -84,5 +88,23 @@ export async function ensureAccessToken(session: HealthSession): Promise<string>
   session.accessToken = tokens.access_token;
   session.expiresAt = Date.now() + tokens.expires_in * 1000;
   if (tokens.refresh_token) session.refreshToken = tokens.refresh_token;
+  return tokens.access_token;
+}
+export async function getStoredAccessToken(): Promise<string> {
+  const refreshToken = await loadRefreshToken();
+
+  if (!refreshToken) {
+    throw new Error("Not signed in");
+  }
+
+  const tokens = await tokenRequest({
+    refresh_token: refreshToken,
+    grant_type: "refresh_token",
+  });
+
+  if (tokens.refresh_token && tokens.refresh_token !== refreshToken) {
+    await saveRefreshToken(tokens.refresh_token);
+  }
+
   return tokens.access_token;
 }
