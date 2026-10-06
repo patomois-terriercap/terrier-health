@@ -65,11 +65,11 @@ export default function Dashboard({ demo }: { demo: boolean }) {
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="space-y-2">
             <p className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase" suppressHydrationWarning>
-              <span className="text-primary">Wristside</span> ·{" "}
+              <span className="text-primary">P-MO Health</span> ·{" "}
               {new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}
             </p>
             <h1 className="text-3xl font-semibold tracking-tighter md:text-4xl" suppressHydrationWarning>
-              {greeting()}
+              {greeting()}, Patrick
             </h1>
             <p className="flex items-center gap-2 text-sm text-secondary">
               <span className={`pulse-dot relative inline-block size-1.5 rounded-full ${demo ? "text-zone" : "text-good"}`} style={{ background: "currentColor" }} />
