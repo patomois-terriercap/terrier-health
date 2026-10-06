@@ -61,7 +61,68 @@ export default function Dashboard({ demo }: { demo: boolean }) {
   return (
     <SettingsProvider>
     <MotionConfig reducedMotion="user">
-      <main className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-4 py-8 sm:px-6 md:py-12">
+      <nav
+  aria-label="Aplicaciones"
+  className="fixed left-4 top-4 z-50 sm:left-6 sm:top-6"
+>
+  <details className="relative">
+    <summary
+      aria-label="Abrir menú de aplicaciones"
+      className="card grid size-11 cursor-pointer list-none place-items-center !rounded-md text-primary [&::-webkit-details-marker]:hidden"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </summary>
+
+    <div className="card absolute left-0 top-full mt-3 w-64 max-w-[calc(100vw-2rem)] p-2">
+      <a
+        href="https://terriercapital.cl/menu"
+        className="block rounded-md px-4 py-3 text-sm text-primary hover:bg-black/5"
+      >
+        Home
+      </a>
+
+<Link
+  href="/"
+  aria-current="page"
+  className="block rounded-md bg-black/5 px-4 py-3 text-sm font-medium text-primary"
+>
+  Salud
+</Link>
+
+      <button
+        type="button"
+        disabled
+        className="flex w-full items-center justify-between px-4 py-3 text-sm text-muted"
+      >
+        <span>Inversiones</span>
+        <span className="text-xs">Próximamente</span>
+      </button>
+
+      <div className="my-2 border-t border-current opacity-10" />
+
+      <form action="/api/auth/logout" method="post">
+        <button
+          type="submit"
+          className="w-full rounded-md px-4 py-3 text-left text-sm text-secondary hover:bg-black/5"
+        >
+          Cerrar sesión
+        </button>
+      </form>
+    </div>
+  </details>
+</nav>
+      <main className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-4 pb-8 pt-24 sm:px-6 md:pb-12 min-[1400px]:pt-12">
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="space-y-2">
             <p className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase" suppressHydrationWarning>
