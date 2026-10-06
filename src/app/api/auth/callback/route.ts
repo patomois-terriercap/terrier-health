@@ -1,8 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { appUrl, exchangeCode } from "@/lib/google-oauth";
 import { getSession } from "@/lib/session";
+import { requirePortalSession } from "@/lib/portal-session";
 
 export async function GET(req: NextRequest) {
+  await requirePortalSession();
   const params = req.nextUrl.searchParams;
   const fail = (msg: string) =>
     NextResponse.redirect(`${appUrl()}/?error=${encodeURIComponent(msg)}`);

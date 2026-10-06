@@ -3,10 +3,20 @@ import { demoDashboard } from "@/lib/demo";
 import { ensureAccessToken } from "@/lib/google-oauth";
 import { fetchDashboard } from "@/lib/health-api";
 import { getSession, isConfigured } from "@/lib/session";
+import { getPortalSession } from "@/lib/portal-session";
 
 const RANGES = [7, 30, 90];
 
 export async function GET(req: NextRequest) {
+  const portalSession = await getPortalSession();
+
+  if (portalSession.loggedIn !== true) {
+    return NextResponse.json(
+      { error: "portal_login_required" },
+      { status: 401 },
+    );
+  }
+  
   const requested = Number(req.nextUrl.searchParams.get("days"));
   const days = RANGES.includes(requested) ? requested : 30;
 
