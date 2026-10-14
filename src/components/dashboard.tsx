@@ -3,7 +3,6 @@
 import { SignOut, WarningCircle } from "@phosphor-icons/react";
 import { motion, MotionConfig, useReducedMotion } from "motion/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { average } from "@/lib/format";
 import { SettingsProvider } from "@/lib/settings";
@@ -22,7 +21,7 @@ type Range = (typeof RANGES)[number];
 
 type State =
   | { status: "loading" }
-  | { status: "error"; message: string }
+  | { status: "error"; message: string; reconnect?: boolean }
   | { status: "ready"; data: DashboardData; range: Range };
 
 function greeting(d = new Date()) {
@@ -33,27 +32,50 @@ function greeting(d = new Date()) {
 export default function Dashboard({ demo }: { demo: boolean }) {
   const [range, setRange] = useState<Range>(30);
   const [state, setState] = useState<State>({ status: "loading" });
-  const router = useRouter();
 
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`/api/dashboard?days=${range}${demo ? "&demo=1" : ""}`)
-      .then(async (res) => {
-        const body = await res.json();
-        if (res.status === 401) {
-          // Session expired or revoked: send back to the sign-in screen.
-          router.replace("/");
-          router.refresh();
+useEffect(() => {
+  let cancelled = false;
+
+  fetch(`/api/dashboard?days=${range}${demo ? "&demo=1" : ""}`)
+    .then(async (res) => {
+      const body = await res.json();
+      if (cancelled) return;
+
+      if (res.status === 401) {
+        if (body.error === "portal_login_required") {
+          window.location.assign("https://terriercapital.cl/ingresar");
           return;
         }
-        if (!res.ok) throw new Error(body.error ?? res.statusText);
-        if (!cancelled) setState({ status: "ready", data: body, range });
-      })
-      .catch((e) => !cancelled && setState({ status: "error", message: String(e.message ?? e) }));
-    return () => {
-      cancelled = true;
-    };
-  }, [range, demo, router]);
+
+        if (body.error === "not_signed_in") {
+          setState({
+            status: "error",
+            message: "La conexión con Google venció o fue revocada.",
+            reconnect: true,
+          });
+          return;
+        }
+      }
+
+      if (!res.ok) {
+        throw new Error(body.error ?? res.statusText);
+      }
+
+      setState({ status: "ready", data: body, range });
+    })
+    .catch((e) => {
+      if (!cancelled) {
+        setState({
+          status: "error",
+          message: String(e.message ?? e),
+        });
+      }
+    });
+
+  return () => {
+    cancelled = true;
+  };
+}, [range, demo]);
 
   const refreshing = state.status === "ready" && state.range !== range;
   const device = state.status === "ready" ? state.data.device : null;
@@ -168,6 +190,14 @@ export default function Dashboard({ demo }: { demo: boolean }) {
             <div>
               <p className="font-medium">Couldn&apos;t load your data</p>
               <p className="mt-1 text-sm text-secondary">{state.message}</p>
+              {state.reconnect && (
+  <a
+    href="/api/auth/login"
+    className="mt-4 inline-flex rounded-md bg-neutral-900 px-5 py-3 text-sm font-medium text-white hover:bg-neutral-700"
+  >
+    Reconectar Google
+  </a>
+)}
             </div>
           </div>
         )}
