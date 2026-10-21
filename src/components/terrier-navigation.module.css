@@ -1,4 +1,4 @@
-.header { position: fixed; inset: 0 0 auto; height: 128px; z-index: 100; background: #fbfcf9; color: #262626; }
+.header { position: fixed; inset: 0 0 auto; height: 96px; z-index: 100; background: #fbfcf9; color: #262626; }
 .navigation { position: absolute; left: 24px; top: 26px; }
 .brand { display: block; width: fit-content; color: #262626; font: 400 23px/1.2 Georgia, "Times New Roman", serif; letter-spacing: -0.6px; text-decoration: none; white-space: nowrap; }
 .brand span { font-style: italic; }
