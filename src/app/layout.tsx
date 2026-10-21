@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Terrier Capital | Salud",
+  title: "TerrierCap | Salud",
   description: "An open-source web dashboard for your Fitbit and Google Health data.",
 };
 
