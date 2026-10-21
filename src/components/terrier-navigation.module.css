@@ -24,7 +24,7 @@
 @media (prefers-reduced-motion: reduce) { .chevron, .chevronOpen { transition: none; } }
 
 
-/* Shared persistent navigation rail. Mobile keeps the collapsible menu. */
+/* Shared persistent navigation rail. On desktop, navigation is always visible. */
 .panelClosed { display: none; }
 @media (min-width: 768px) {
   .header { inset: 0 auto 0 0; width: 240px; height: 100dvh; box-sizing: border-box; background: #f3f4f2; border-right: 1px solid #e2e4e0; overflow: visible; }
