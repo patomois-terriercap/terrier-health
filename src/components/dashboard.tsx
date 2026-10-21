@@ -85,7 +85,7 @@ useEffect(() => {
     <SettingsProvider>
     <MotionConfig reducedMotion="user">
       <TerrierNavigation area="health" />
-      <main className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-4 pb-8 pt-[112px] sm:px-6 md:pb-12">
+      <main className="mx-auto flex w-full max-w-[1240px] flex-col gap-8 px-4 pb-8 pt-[88px] sm:px-6 md:pb-12">
         <header className="flex flex-wrap items-end justify-between gap-6">
           <div className="space-y-2">
             <p className="font-mono text-[11px] tracking-[0.14em] text-muted uppercase" suppressHydrationWarning>
