@@ -22,5 +22,14 @@ export async function POST(request: NextRequest) {
     expires: new Date(0),
     maxAge: 0,
   });
+  // End the Health browser session without revoking the separately stored Google connection.
+  response.cookies.set("health_session", "", {
+    path: "/",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    expires: new Date(0),
+    maxAge: 0,
+  });
   return response;
 }
