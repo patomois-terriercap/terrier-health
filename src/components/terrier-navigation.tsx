@@ -70,8 +70,7 @@ export default function TerrierNavigation({ area, currentPath = "/" }: { area: A
               <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          {open && (
-            <div id={`${id}-menu`} className={styles.panel}>
+          <div id={`${id}-menu`} className={`${styles.panel} ${!open ? styles.panelClosed : ""}`}>
               <a href={area === "health" ? "/" : "https://salud.terriercapital.cl"}
                 className={`${styles.item} ${area === "health" ? styles.active : ""}`}
                 aria-current={area === "health" ? "page" : undefined} onClick={() => setOpen(false)}>
@@ -105,7 +104,6 @@ export default function TerrierNavigation({ area, currentPath = "/" }: { area: A
               </button>
               {error && <p role="alert" className={styles.error}>{error}</p>}
             </div>
-          )}
         </nav>
       </div>
     </header>
